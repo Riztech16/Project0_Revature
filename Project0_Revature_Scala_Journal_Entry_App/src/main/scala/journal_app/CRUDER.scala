@@ -24,12 +24,11 @@ object CRUDER {
 
   def getResults[T](obs: Observable[T]): Seq[T] = {
     Await.result(obs.toFuture(), Duration(10, SECONDS))
-
   }
-
 
   def Add_One_or_Many(notes: String, date: String, Name: String): Unit = {
     getResults(collection.insertOne(App_Fields_MongoDB(Name_entry = Name, journal_entry = notes, date_entry = Some(date))))
+
   }
 
   def Read_One(date:String, Name: String): Unit = {
@@ -44,6 +43,7 @@ object CRUDER {
     Dates_collected += date
 
     CSV_File_Creator.Read_out_file(Notes_collected.toList,Dates_collected.toList)
+
   }
 
   def Read_Many(date:Array[String], Name: String): Unit = {
@@ -59,6 +59,7 @@ object CRUDER {
       Dates_collected += d
     }
     CSV_File_Creator.Read_out_file(Notes_collected.toList,Dates_collected.toList)
+
   }
 
   def Update_One_or_Many(notes: String, date: String, Name: String): Unit = {
@@ -66,6 +67,7 @@ object CRUDER {
       (equal("Name_entry", Name),
       equal("date_entry", date)),
       set("journal_entry",notes)))
+
   }
 
   def Delete_One(date: String, Name: String): Unit = {

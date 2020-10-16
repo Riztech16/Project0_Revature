@@ -24,13 +24,15 @@ object Guidance_Methods {
   def File_Ask_Dates():Unit={
     print("Import the file containing the date or dates for which you want the entries retrieved (.csv): ")
   }
-  def File_Ask_Dates_Deleted():Unit={
-    print("Import the file containing the date or dates for which you want the entries deleted (.csv): ")
-  }
 
   def File_Ok_To_Update():Unit={
     print("Whenever ready type ok: ")
   }
 
-
+  def File_Ask_Dates_Deleted():Unit={
+    print("Import the file containing the date or dates for which you want the entries deleted (.csv): ")
+  }
+  def Exit_Message():Unit={
+    println("Goodbye Take Care")
+  }
 }

@@ -56,7 +56,11 @@ class Main_App {
 
           }
         }
-        case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("exit")=> continue_running_whileloop=false
+        case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("exit")=>{
+          Guidance_Methods.Exit_Message()
+          CRUDER.client.close()
+          continue_running_whileloop=false
+        }
         case notRecognized => println(s"$notRecognized not a recognized command")
 
       }
