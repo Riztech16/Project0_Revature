@@ -1,112 +1,65 @@
 package journal_app
-
-import java.util.Date
-
 import scala.io.StdIn
 import scala.util.matching.Regex
 
 class Main_App {
 
-  //Welcome Message
-  def Welcome_message():Unit={
-    println("Hello! Welcome To Journal App.")
-    print("Please Enter Your Name: ")
-
-
-  }
-
-  def File_Requestor():Unit={
-    print("Please enter the file name (csv): ")
-
-    }
-
-
-  def File_Ask():Unit={
-  print("Would you like to import a csv file for the files you have written? (Y or N): ")
-  }
-
-  def File_Ask_Dates():Unit={
-    print("Would you like to import a csv file containing the dates to fetch the journal entries for? (Y or N): ")
-  }
-
-
-
-
-  //User Options
-  def User_Options_CRUD():Unit={
-    println("Would like to you like to Read, Update, or Delete Entry? Type Update, Delete, or Read ")
-  }
-
   //Verifying user commands via regex
   val commandArgPattern : Regex = "(\\w)".r
   val commandArgPattern1 : Regex = "(\\w+)".r
 
-
-
   //MAIN APP "GUI"
   def main_app:Unit= {
 
-    Welcome_message()
+    Guidance_Methods.Welcome_message()
     val Name_Storage: String = StdIn.readLine()
-
+    var continue_running_whileloop: Boolean = true
 
     //Always True while loop
+    while(continue_running_whileloop) {
+      Guidance_Methods.File_Ask()
 
-
-      File_Ask()
       StdIn.readLine() match {
         case commandArgPattern(cmd) if cmd.equalsIgnoreCase("Y") => {
-          File_Requestor()
+          Guidance_Methods.File_Requestor()
           val File_Name: String = StdIn.readLine()
           CSV_File_Parser.parser(File_Name, Name_Storage)
         }
 
         case commandArgPattern(cmd) if cmd.equalsIgnoreCase("N") => {
-          User_Options_CRUD()
+          Guidance_Methods.User_Options_CRUD()
           StdIn.readLine() match {
 
             case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Read") => {
-              File_Ask_Dates()
-              StdIn.readLine() match {
-                case commandArgPattern(cmd) if cmd.equalsIgnoreCase("Y") => {
-                  File_Requestor()
-                  val File_Name: String = StdIn.readLine()
-                  CSV_File_Parser.date_parser(File_Name,Name_Storage)
-
-                }
-                case commandArgPattern(cmd) if cmd.equalsIgnoreCase("N") => {
-                }
-              }
+              Guidance_Methods.File_Ask_Dates()
+              val File_Name: String = StdIn.readLine()
+              CSV_File_Parser.date_parser(File_Name, Name_Storage)
             }
-              /*
+
             case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Update") => {
-              File_Ask_Dates()
+              Guidance_Methods.File_Ask_Dates()
+              val File_Name: String = StdIn.readLine()
+              CSV_File_Parser.date_parser(File_Name, Name_Storage)
+              Guidance_Methods.File_Ok_To_Update()
+
               StdIn.readLine() match {
-                case commandArgPattern(cmd) if cmd.equalsIgnoreCase("Y") => {
-                  File_Requestor()
-                  val File_Name: String = StdIn.readLine()
-                }
-                case commandArgPattern(cmd) if cmd.equalsIgnoreCase("N") => {
+                case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Ok") => {
+                  CSV_File_Parser.Update_parser("Update_Entries.csv", Name_Storage)
                 }
               }
             }
-
             case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Delete") => {
-              File_Ask_Dates()
-              StdIn.readLine() match {
-                case commandArgPattern(cmd) if cmd.equalsIgnoreCase("Y") => {
-                  File_Requestor()
-                  val File_Name: String = StdIn.readLine()
-                }
-                case commandArgPattern(cmd) if cmd.equalsIgnoreCase("N") => {
-                }
-              }
-
+              Guidance_Methods.File_Ask_Dates_Deleted()
+              val File_Name: String = StdIn.readLine()
+              CSV_File_Parser.date_delete_parser(File_Name, Name_Storage)
             }
-              */
+
           }
         }
+        case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("exit")=> continue_running_whileloop=false
+        case notRecognized => println(s"$notRecognized not a recognized command")
 
       }
+    }
   }
 }
