@@ -25,8 +25,17 @@ object Guidance_Methods {
     print("Import the file containing the date or dates for which you want the entries retrieved (.csv): ")
   }
 
-  def File_Ok_To_Update():Unit={
+  def File_Ask_Dates_Update():Unit={
+    print("Import the file containing the date or dates for which you want the entries to be updated (.csv): ")
+  }
+
+  def Ok_To_Update():Unit={
     print("Whenever ready type ok: ")
+  }
+
+  def File_Ok_To_Update():Unit={
+    print("Please enter the file name (csv): ")
+
   }
 
   def File_Ask_Dates_Deleted():Unit={

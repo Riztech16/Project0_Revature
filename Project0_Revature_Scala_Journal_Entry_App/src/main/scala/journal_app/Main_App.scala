@@ -13,10 +13,11 @@ class Main_App {
 
     Guidance_Methods.Welcome_message()
     val Name_Storage: String = StdIn.readLine()
-    var continue_running_whileloop: Boolean = true
+    var continue_running_Mainwhileloop: Boolean = true
+    var continue_running_Innerwhileloop:Boolean=true
 
     //Always True while loop
-    while(continue_running_whileloop) {
+    while(continue_running_Mainwhileloop) {
       Guidance_Methods.File_Ask()
 
       StdIn.readLine() match {
@@ -27,39 +28,47 @@ class Main_App {
         }
 
         case commandArgPattern(cmd) if cmd.equalsIgnoreCase("N") => {
-          Guidance_Methods.User_Options_CRUD()
-          StdIn.readLine() match {
+          while(continue_running_Innerwhileloop) {
+            Guidance_Methods.User_Options_CRUD()
+            StdIn.readLine() match {
 
-            case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Read") => {
-              Guidance_Methods.File_Ask_Dates()
-              val File_Name: String = StdIn.readLine()
-              CSV_File_Parser.date_parser(File_Name, Name_Storage)
-            }
+              case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Read") => {
+                Guidance_Methods.File_Ask_Dates()
+                val File_Name: String = StdIn.readLine()
+                CSV_File_Parser.date_parser(File_Name, Name_Storage)
+              }
 
-            case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Update") => {
-              Guidance_Methods.File_Ask_Dates()
-              val File_Name: String = StdIn.readLine()
-              CSV_File_Parser.date_parser(File_Name, Name_Storage)
-              Guidance_Methods.File_Ok_To_Update()
+              case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Update") => {
+                Guidance_Methods.File_Ask_Dates()
+                val File_Name: String = StdIn.readLine()
+                CSV_File_Parser.date_parser(File_Name, Name_Storage)
+                Guidance_Methods.Ok_To_Update()
 
-              StdIn.readLine() match {
-                case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Ok") => {
-                  CSV_File_Parser.Update_parser("Update_Entries.csv", Name_Storage)
+                StdIn.readLine() match {
+                  case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Ok") => {
+                    Guidance_Methods.File_Ok_To_Update()
+                    val File_Name: String = StdIn.readLine()
+                    CSV_File_Parser.Update_parser(File_Name, Name_Storage)
+                  }
                 }
               }
-            }
-            case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Delete") => {
-              Guidance_Methods.File_Ask_Dates_Deleted()
-              val File_Name: String = StdIn.readLine()
-              CSV_File_Parser.date_delete_parser(File_Name, Name_Storage)
-            }
+              case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Delete") => {
+                Guidance_Methods.File_Ask_Dates_Deleted()
+                val File_Name: String = StdIn.readLine()
+                CSV_File_Parser.date_delete_parser(File_Name, Name_Storage)
+              }
 
+              case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("Back")=>{
+                continue_running_Innerwhileloop=false
+              }
+              case notRecognized => println(s"$notRecognized not a recognized command")
+            }
           }
         }
         case commandArgPattern1(cmd) if cmd.equalsIgnoreCase("exit")=>{
-          Guidance_Methods.Exit_Message()
           CRUDER.client.close()
-          continue_running_whileloop=false
+          Guidance_Methods.Exit_Message()
+          continue_running_Mainwhileloop=false
         }
         case notRecognized => println(s"$notRecognized not a recognized command")
 
